@@ -1,0 +1,319 @@
+.flex {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.flex1 {
+    flex: 1;
+}
+
+.flex2 {
+    flex: 2;
+}
+
+.flex3 {
+    flex: 3;
+}
+
+.flexBetween {
+    justify-content: space-between;
+}
+
+.flexAgrount {
+    justify-content: space-around;
+}
+
+.flexCenter {
+    justify-content: center;
+}
+
+.flexWrap {
+    flex-wrap: wrap;
+}
+
+.flexEnd {
+    justify-content: flex-end;
+}
+
+.flexCulum {
+    flex-direction: column;
+}
+
+.alignItem {
+    align-items: flex-start;
+}
+
+.alignEnd {
+    align-items: flex-end;
+}
+
+.fontSize20 {
+    font-size: 20px;
+}
+
+.fontSize22 {
+    font-size: 22px;
+}
+
+.fontSize24 {
+    font-size: 24px;
+}
+
+.fontSize26 {
+    font-size: 26px;
+}
+
+.fontSize28 {
+    font-size: 28px；;
+}
+
+.fontSize {
+    font-size: 30px;
+}
+
+.fontSize32 {
+    font-size: 32px;
+}
+
+.fontSize36 {
+    font-size: 36px;
+}
+
+.marginRight {
+    margin-right: 30px;
+}
+
+.marginRight20 {
+    margin-right: 20px;
+}
+
+.marginRight10 {
+    margin-right: 10px;
+}
+
+.marginTop {
+    margin-top: 30px;
+}
+
+.marginTop70 {
+    margin-top: 70px;
+}
+
+.marginTop50 {
+    margin-top: 50px;
+}
+
+.marginTop5 {
+    margin-top: 5px;
+}
+
+.marginTop10 {
+    margin-top: 10px;
+}
+
+.marginTop20 {
+    margin-top: 20px;
+}
+
+.marginLeft {
+    margin-left: 30px;
+}
+
+.marginLeft10 {
+    margin-left: 10px;
+}
+
+.marginLeft20 {
+    margin-left: 20px;
+}
+
+.paddingLeft {
+    padding-left: 30px;
+}
+
+.paddingLeft20 {
+    padding-left: 20px;
+}
+
+.paddingLeft10 {
+    padding-left: 10px;
+}
+
+.textMain {
+    color: #FF4038;
+}
+
+.textGray {
+    color: #D4D4D4;
+}
+
+.textGrayShen {
+    color: #999999;
+}
+
+.textBlack {
+    color: #000000;
+}
+
+.textBule {
+    color: #2184FF !important;
+}
+
+.textRed {
+    color: #FF4038;
+}
+
+.textWhite {
+    color: #FFFFFF;
+}
+
+.textYearl {
+    color: #FFA900;
+}
+
+.textGreen {
+    color: #00c777;
+}
+
+.color333 {
+    color: #333333;
+}
+
+.bgMain {
+    background: #FF4038;
+}
+
+.bgGrayGren {
+    background: #7F7F7F;
+}
+
+.bgBlue {
+    background: #2184FF;
+}
+
+.whiteBg {
+    width: 100%;
+    background: #fff;
+}
+
+.fontWeight {
+    font-weight: bold;
+}
+
+.textOverflow {
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.btnsFixed {
+    position: fixed;
+    bottom: 0;
+    text-align: center;
+    width: 100%;
+    z-index: 66;
+    background: #ffffff;
+    padding: 20rpx 3%;
+}
+
+
+/* 常用按钮 */
+
+.btnComment {
+    background: #FF4038;
+    color: #fff;
+    text-align: center;
+    padding: 20rpx;
+    border-radius: 50rpx;
+}
+
+
+/* 居中定位 */
+
+.positionCenter {
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+/* 公用标题 */
+
+.title_H2 {
+    font-size: 36px;
+    color: #333333;
+    line-height: 40px;
+    margin: 0;
+    padding: 40px 0px 30px;
+    position: relative;
+    text-align: center;
+}
+
+.title_H2::after {
+    content: "";
+    width: 123px;
+    height: 6px;
+    background: linear-gradient(90deg, #2E6CEE 0%, #009EFE 100%);
+    border-radius: 3px;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+/* 媒体查询（手机） */
+
+@media screen and (max-width: 768px) {
+    .title_H2 {
+        font-size: 24px;
+        color: #333333;
+        line-height: 20px;
+        margin: 0;
+        padding: 20px 0px 20px;
+        position: relative;
+        text-align: center;
+    }
+    .title_H2::after {
+        content: "";
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, #2E6CEE 0%, #009EFE 100%);
+        border-radius: 3px;
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .marginTop50 {
+        margin-top: 25px;
+    }
+}
+
+
+/* 多行省略 */
+
+.line2_ellipsis {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+.line3_ellipsis {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+}
+
+.line4_ellipsis {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+}
