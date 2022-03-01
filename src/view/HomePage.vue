@@ -1,7 +1,12 @@
 <template>
   <div id="HomePage">
-    <!-- 轮播图 -->
-    <div id="swiper" class="container-fuild">
+    <!-- 轮播图  电脑显示-->
+    <div
+      id="swiper"
+      class="container-fuild hidden-xs"
+      v-if="swiperList.length > 0"
+    >
+      <!-- 电脑显示 -->
       <div class="swiper-container banner-swiper">
         <div class="swiper-wrapper">
           <div
@@ -9,8 +14,39 @@
             v-for="(item, index) in swiperList"
             :key="index"
           >
-            <img class="swiper-lazy" :data-src="item.img" alt="轮播图" />
-            <div class="swiper-lazy-preloader"></div>
+            <!-- <img class="swiper-lazy" :data-src="item.banner" alt="轮播图" /> -->
+            <img class="swiper-lazy" :src="item.banner" alt="轮播图" />
+            <!-- 延迟加载转圈 -->
+            <!-- <div class="swiper-lazy-preloader"></div> -->
+            <div class="swiper-slide-title">
+              <!-- <h1>{{item.title}}</h1>
+                <p>{{item.content}}</p> -->
+            </div>
+          </div>
+        </div>
+        <!-- 如果需要分页器 -->
+        <div class="swiper-pagination"></div>
+
+        <!-- 如果需要导航按钮 -->
+        <!-- <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div> -->
+      </div>
+    </div>
+    <!-- 轮播图 手机显示 -->
+    <div
+      id="swiper"
+      class="container-fuild visible-xs"
+      v-if="mobileSwiperList.length > 0"
+    >
+      <div class="swiper-container banner-swiper">
+        <div class="swiper-wrapper">
+          <div
+            class="swiper-slide"
+            v-for="(item, index) in mobileSwiperList"
+            :key="index"
+          >
+            <img class="swiper-lazy" :src="item.banner" alt="轮播图" />
+            <!-- <div class="swiper-lazy-preloader"></div> -->
             <div class="swiper-slide-title">
               <!-- <h1>{{item.title}}</h1>
                 <p>{{item.content}}</p> -->
@@ -173,7 +209,11 @@
     </div>
 
     <!-- 项目案例 -->
-    <div id="projectCases" class="container-fuild">
+    <div
+      id="projectCases"
+      class="container-fuild"
+      v-if="Object.keys(projectCasesData).length !== 0"
+    >
       <div class="container projectCases-container wow fadeInUp">
         <h2 class="title_H2">项目案例</h2>
 
@@ -183,15 +223,17 @@
               {{ projectCasesData.title }}
             </h2>
             <div class="projectCases_content_text">
-              <span class="line3_ellipsis">{{ projectCasesData.text }}</span>
+              <span class="line3_ellipsis">{{ projectCasesData.digest }}</span>
 
-              <span class="projectCases_content_span" @click="navTo(1)"
+              <span
+                class="projectCases_content_span"
+                @click="navTo(projectCasesData.content)"
                 >了解更多》</span
               >
             </div>
           </div>
           <div class="projectCases_img_weapper">
-            <img src="@/assets/image/home/yyxz.png" alt="" />
+            <img :src="projectCasesData.coverImg" alt="" />
           </div>
         </div>
       </div>
@@ -208,7 +250,7 @@
 <script>
 import Swiper from "swiper";
 import { WOW } from "wowjs";
-import {getbannerList} from "../api/home"
+import { getbannerList, getEnterpriseList } from "../api/home";
 
 export default {
   name: "HomePage",
@@ -216,27 +258,19 @@ export default {
     return {
       swiperList: [
         {
-          img: require("@/assets/image/home/banner-01.png"),
-          path: "",
-          title: "您身边的IT专家1",
-          content:
-            "宣传简介宣传简介宣传简介宣传简介宣传简介宣传简介宣传简介宣传简介",
+          banner:
+            "http://hjftestother.zgzhongnan.com/hjf-test-other/20220228_4870157.png",
         },
         {
-          img: require("@/assets/image/home/banner-02.png"),
-          path: "",
-          title: "您身边的IT专家2",
-          content:
-            "宣传简介宣传简介宣传简介宣传简介宣传简介宣传简介宣传简介宣传简介",
+          banner:
+            "http://hjftestother.zgzhongnan.com/hjf-test-other/20220228_4144353.png",
         },
         {
-          img: require("@/assets/image/home/banner-03.png"),
-          path: "",
-          title: "您身边的IT专家3",
-          content:
-            "宣传简介宣传简介宣传简介宣传简介宣传简介宣传简介宣传简介宣传简介",
+          banner:
+            "http://hjftestother.zgzhongnan.com/hjf-test-other/20220228_5854988.png",
         },
       ],
+      mobileSwiperList: [],
       mobileIndustryStatusList: [
         {
           titleImg: require("../assets/image/home/num1.png"),
@@ -305,49 +339,15 @@ export default {
           text: "仓储物流园",
         },
       ],
-      projectCasesData: {
-        title: "颖云物联网小镇",
-        text: "颖云物联网小镇位于河南省禹州市的颍云物联网科技创新园，被评为“2018年物联网集成创新与融合应用”示范项目，是河南省唯一一个智慧小镇项目，是中南科技AIOT智慧安防物联网一体化的重点示范项目，展厅综合呈现了国家级物联网基础设施、中南科技AIOT智慧社区物联网一体化应用和平台、人工智能软硬件设备等",
-      },
+      projectCasesData: {},
     };
   },
   created() {},
 
   mounted() {
-    /* banner-swiper */
-    new Swiper(".banner-swiper", {
-      loop: true, // 循环模式选项
-      effect: "fade",
-      //自动播放
-      autoplay: {
-        delay: 3000,
-        stopOnLastSlide: false,
-        disableOnInteraction: false,
-      },
-      // 如果需要分页器
-      // pagination: {
-      //   el: ".swiper-pagination",
-      //   clickable: true,
-      // },
-      pagination: {
-        el: ".swiper-pagination",
-        clickable: true,
-        renderBullet: function (index, className) {
-          return '<span class="' + className + '">' + "</span>";
-        },
-      },
-      // 如果需要前进后退按钮
-      // navigation: {
-      //   nextEl: ".swiper-button-next",
-      //   prevEl: ".swiper-button-prev"
-      // },
-      // 延迟加载
-      lazy: {
-        loadPrevNext: true,
-      },
-      observer: true, //修改swiper自己或子元素时，自动初始化swiper
-      observeParents: true, //修改swiper的父元素时，自动初始化swiper
-    });
+    this.bannerList();
+    this.getEnterpriseList();
+
     /* customer-swiper */
     new Swiper(".customer-swiper", {
       loop: true, // 循环模式选项
@@ -375,22 +375,87 @@ export default {
       live: true,
     });
     wow.init();
-    this.bannerList()
-
   },
 
   methods: {
-    navTo(id) {
-      this.$router.push({ path: "/projectCases", query: { id } });
+    navTo(content) {
+      this.$router.push({
+        path: "/projectCases",
+        query: {
+          content: content,
+          swiperList: this.swiperList,
+          mobileSwiperList: this.mobileSwiperList,
+        },
+      });
     },
-    bannerList(){
+
+    bannerList() {
       getbannerList({
-        display:1,
-        adaptation:1
-      }).then(res=>{
-        console.log(res)
-      })
-    }
+        display: 1,
+        adaptation: 1,
+      }).then((res) => {
+        if (res.code == 0) {
+          this.swiperList = res.rows;
+
+          this.$nextTick(() => {
+            /* banner-swiper */
+            new Swiper(".banner-swiper", {
+              loop: true, // 循环模式选项
+              effect: "fade",
+              //自动播放
+              autoplay: {
+                delay: 3000,
+                stopOnLastSlide: false,
+                disableOnInteraction: false,
+              },
+              // 如果需要分页器
+              // pagination: {
+              //   el: ".swiper-pagination",
+              //   clickable: true,
+              // },
+              pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+                renderBullet: function (index, className) {
+                  return '<span class="' + className + '">' + "</span>";
+                },
+              },
+              // 如果需要前进后退按钮
+              // navigation: {
+              //   nextEl: ".swiper-button-next",
+              //   prevEl: ".swiper-button-prev"
+              // },
+              // 延迟加载
+              lazy: {
+                loadPrevNext: true,
+              },
+              observer: true, //修改swiper自己或子元素时，自动初始化swiper
+              observeParents: true, //修改swiper的父元素时，自动初始化swiper
+            });
+          });
+        }
+      });
+      getbannerList({
+        display: 1,
+        adaptation: 2,
+      }).then((res) => {
+        if (res.code == 0) {
+          this.mobileSwiperList = res.rows;
+        }
+      });
+    },
+
+    // 数据列表
+    getEnterpriseList() {
+      getEnterpriseList({
+        pageNum: 1,
+        pageSize: 1,
+      }).then((res) => {
+        if (res.code == 0 && res.rows.length !== 0) {
+          this.projectCasesData = res.rows[0];
+        }
+      });
+    },
   },
 };
 </script>

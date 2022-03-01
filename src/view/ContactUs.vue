@@ -2,7 +2,7 @@
   <!-- 关于中南 -->
   <div id="ContactUs">
     <!-- 轮播图 -->
-    <Banner :swiperList="swiperList" />
+    <Banner :swiperList="swiperList" :mobileSwiperList="mobileSwiperList" />
 
     <!-- 关于我们 -->
     <div id="about" class="container-fuild">
@@ -38,7 +38,7 @@
           <div
             class="honor_item"
             v-for="(item, index) in honorList"
-            :key="index+'a'"
+            :key="index + 'a'"
           >
             <div class="honor_img_weapper">
               <img :src="item.img" alt="" />
@@ -52,7 +52,7 @@
             <div
               class="swiper-slide customer-block"
               v-for="(item, index) in honorsList"
-              :key="index+'b'"
+              :key="index + 'b'"
             >
               <img class="honor_carouse_img" :src="item.img" alt="" />
             </div>
@@ -74,7 +74,7 @@
             <div
               class="swiper-slide"
               v-for="(item, index) in jointList"
-              :key="index+'c'"
+              :key="index + 'c'"
             >
               <div class="joint_img_weapper">
                 <img class="joint_img" :src="item.img" alt="" />
@@ -95,7 +95,7 @@
           <div
             class="culture_item flex"
             v-for="(item, index) in cultureList"
-            :key="index+'d'"
+            :key="index + 'd'"
           >
             <div class="culture_title_weappr">
               <div class="culture_title1">{{ item.title1 }}</div>
@@ -122,7 +122,7 @@
           <div
             class="mobile_culture_item"
             v-for="(item, index) in cultureList.slice(1, 5)"
-            :key="index+'e'"
+            :key="index + 'e'"
           >
             <img class="mobile_culture_img" :src="item.img" alt="" />
 
@@ -148,7 +148,7 @@
 
           <div
             class="mobile_culture_item"
-            v-for="(item, index) in cultureList.slice(0,1)"
+            v-for="(item, index) in cultureList.slice(0, 1)"
             :key="index"
           >
             <img class="mobile_culture_img" :src="item.img" alt="" />
@@ -160,14 +160,14 @@
             </div>
 
             <div class="mobile_culture_text_weapper">
-              <div class="mobile_culture_text  ">{{ item.text1 }}</div>
-              <div class="mobile_culture_text " v-if="item.text2">
+              <div class="mobile_culture_text">{{ item.text1 }}</div>
+              <div class="mobile_culture_text" v-if="item.text2">
                 {{ item.text2 }}
               </div>
-              <div class="mobile_culture_text " v-if="item.text3">
+              <div class="mobile_culture_text" v-if="item.text3">
                 {{ item.text3 }}
               </div>
-              <div class="mobile_culture_text " v-if="item.text4">
+              <div class="mobile_culture_text" v-if="item.text4">
                 {{ item.text4 }}
               </div>
             </div>
@@ -181,9 +181,9 @@
   </div>
 </template> 
 <script>
+import { getbannerList } from "../api/home";
 import { WOW } from "wowjs";
 import Swiper from "swiper";
-
 import Banner from "../components/banner"; //轮播图
 import Contact from "../components/contact"; //联系我们
 
@@ -195,11 +195,8 @@ export default {
   },
   data() {
     return {
-      swiperList: [
-        {
-          img: require("@/assets/image/ContactUs/banner.png"),
-        },
-      ],
+      swiperList: [],
+      mobileSwiperList: [],
       cooperateList: [
         {
           img: require("@/assets/image/CompanyIntroduction/num1.png"),
@@ -436,6 +433,8 @@ export default {
   },
 
   mounted() {
+    this.bannerList();
+
     /* customer-swiper */
     new Swiper(".customer-swiper", {
       loop: true, // 循环模式选项
@@ -500,11 +499,23 @@ export default {
     wow.init();
   },
   methods: {
-    init() {
-      let { jointList } = this;
-      this.jointList1 = jointList.slice(0, 8);
-      this.jointList2 = jointList.slice(8, 16);
-      this.jointList3 = jointList.slice(16, 24);
+    bannerList() {
+      getbannerList({
+        display: 2,
+        adaptation: 1,
+      }).then((res) => {
+        if (res.code == 0) {
+          this.swiperList = res.rows;
+        }
+      });
+      getbannerList({
+        display: 2,
+        adaptation: 2,
+      }).then((res) => {
+        if (res.code == 0) {
+          this.mobileSwiperList = res.rows;
+        }
+      });
     },
   },
 };
@@ -807,7 +818,7 @@ export default {
   .mobile_culture_text {
     font-size: 12px;
   }
-  .mobile_culture_item:last-of-type{
+  .mobile_culture_item:last-of-type {
     width: 100%;
     height: 100px;
     margin-right: 0px;
@@ -815,7 +826,7 @@ export default {
     align-items: center;
     /* justify-content: start; */
   }
-  .mobile_culture_title2:last-of-type{
+  .mobile_culture_title2:last-of-type {
     width: 30px;
     line-height: 20px;
   }

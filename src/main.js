@@ -4,10 +4,18 @@ import App from './App'
 /* 路由 */
 import router from './router'
 
-// 引入ElementUI
-import ElementUI from 'element-ui';
+// import ElementUI from 'element-ui';
+// 按需引入element-ui
+import { Pagination, Row, Col } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-Vue.use(ElementUI);
+Vue.use(Pagination);
+Vue.use(Row);
+Vue.use(Col);
+
+
+// 进度条
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 
 
 /* swiper */
@@ -51,14 +59,17 @@ Vue.component(GoTop.name, GoTop)
 
 Vue.config.productionTip = false
 
-// router.beforeEach((to, from, next) => {
-//     if (to.meta.title) {
-//         document.title = to.meta.title
-//     }
-//     next();
-// })
+router.beforeEach((to, from, next) => {
+    NProgress.start()
+    if (to.meta.title) {
+        document.title = to.meta.title
+    }
+    next();
+})
+router.afterEach(() => {
+    NProgress.done()
+})
 
-console.log("11111111111111")
 
 
 new Vue({

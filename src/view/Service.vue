@@ -2,7 +2,7 @@
   <!-- AIOT综合管理平台 -->
   <div id="Service">
     <!-- 轮播图 -->
-    <Banner :swiperList="swiperList" />
+    <Banner :swiperList="swiperList" :mobileSwiperList="mobileSwiperList" />
 
     <!-- 关于AIOT综合管理平台 -->
     <div id="AIOT" class="container-fuild">
@@ -173,6 +173,7 @@
   </div>
 </template>
 <script>
+import { getbannerList } from "../api/home";
 import { WOW } from "wowjs";
 import Banner from "../components/banner"; //轮播图
 
@@ -183,11 +184,8 @@ export default {
   },
   data() {
     return {
-      swiperList: [
-        {
-          img: require("../assets/image/service/banner.png"),
-        },
-      ],
+      swiperList: [],
+      mobileSwiperList: [],
       big6List: [
         {
           img: require("../assets/image/service/big1.png"),
@@ -342,10 +340,29 @@ export default {
     };
   },
   mounted() {
+    this.bannerList();
     var wow = new WOW();
     wow.init();
   },
   methods: {
+    bannerList() {
+      getbannerList({
+        display: 2,
+        adaptation: 1,
+      }).then((res) => {
+        if (res.code == 0) {
+          this.swiperList = res.rows;
+        }
+      });
+      getbannerList({
+        display: 2,
+        adaptation: 2,
+      }).then((res) => {
+        if (res.code == 0) {
+          this.mobileSwiperList = res.rows;
+        }
+      });
+    },
     // ServiceClick(id){
     //     this.$router.push({
     //         name: 'servicedetail',
@@ -506,6 +523,7 @@ export default {
   text-align: center;
   padding: 12px 30px;
   display: none;
+  transition: all 1s;
 }
 .odds_title_active_title {
   font-size: 24px;
@@ -700,9 +718,9 @@ export default {
     font-size: 10px;
     color: #666666;
   }
-  .a_item_weapper_l{
+  .a_item_weapper_l {
     text-align: end;
-  } 
+  }
   .a_center_weapper {
     margin: 0px 10px;
   }

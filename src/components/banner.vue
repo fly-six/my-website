@@ -1,15 +1,40 @@
 <template>
-  <!-- 轮播图 -->
-  <div id="swiper" class="container-fuild">
-    <div class="swiper-container banner-swiper">
-      <div class="swiper-wrapper">
-        <div
-          class="swiper-slide"
-          v-for="(item, index) in swiperList"
-          :key="index"
-        >
-          <img class="swiper-lazy" :data-src="item.img" alt="轮播图" />
-          <div class="swiper-lazy-preloader"></div>
+  <div>
+    <!-- 轮播图 -->
+      <!-- 电脑端显示 -->
+    <div id="swiper" class="container-fuild hidden-xs" v-if="swiperList.length > 0">
+      <div
+        class="swiper-container banner-swiper"
+      >
+        <div class="swiper-wrapper">
+          <div
+            class="swiper-slide"
+            v-for="(item, index) in swiperList"
+            :key="index"
+          >
+            <!-- <img class="swiper-lazy" :src="item.banner" alt="轮播图" /> -->
+            <img class="swiper-lazy" :src="item.banner" alt="轮播图" />
+
+            <!-- <div class="swiper-lazy-preloader"></div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <!-- 手机端显示 -->
+    <div id="swiper" class="container-fuild visible-xs" v-if="mobileSwiperList.length > 0">
+      <div
+        class="swiper-container banner-swiper"
+      >
+        <div class="swiper-wrapper">
+          <div
+            class="swiper-slide"
+            v-for="(item, index) in mobileSwiperList"
+            :key="index"
+          >
+            <img class="swiper-lazy" :src="item.banner" alt="轮播图" />
+            <!-- <div class="swiper-lazy-preloader"></div> -->
+          </div>
         </div>
       </div>
     </div>
@@ -21,11 +46,16 @@ export default {
   props: {
     swiperList: {
       type: Array,
-      default: []
-    }
+      default: [],
+    },
+    mobileSwiperList: {
+      type: Array,
+      default: [],
+    },
   },
   data() {
-    return {};
+    return {
+    };
   },
   mounted() {
     /* banner-swiper */
@@ -45,9 +75,9 @@ export default {
       },
 
       // 延迟加载
-      lazy: {
-        loadPrevNext: true,
-      },
+      // lazy: {
+      //   loadPrevNext: true,
+      // },
       observer: true, //修改swiper自己或子元素时，自动初始化swiper
       observeParents: true, //修改swiper的父元素时，自动初始化swiper
     });

@@ -14,7 +14,7 @@ module.exports = {
         proxy: {
             '/admin': {
                 //代理api
-                target: 'http://192.168.101.2:9001', // 代理接口(注意只要域名就够了)
+                target: 'http://dev-market.zgzhongnan.com:9001', // 代理接口(注意只要域名就够了)
                 changeOrigin: true, //是否跨域
                 ws: true, // 是否支持 websockets
                 pathRewrite: {

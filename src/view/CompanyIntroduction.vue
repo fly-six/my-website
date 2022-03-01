@@ -2,7 +2,7 @@
   <!-- 招商代理 -->
   <div id="CompanyIntroduction">
     <!-- 轮播图 -->
-    <Banner :swiperList="swiperList" />
+    <Banner :swiperList="swiperList" :mobileSwiperList="mobileSwiperList" />
 
     <!-- 合作优势  电脑显示-->
     <div id="industryStatus" class="container-fuild hidden-xs">
@@ -174,20 +174,18 @@
 import { WOW } from "wowjs";
 import Banner from "../components/banner"; //轮播图
 import Contact from "../components/contact"; //联系我们
+import { getbannerList } from "../api/home";
 
 export default {
-  name: "JobChance",
+  name: "CompanyIntroduction",
   components: {
     Banner,
     Contact,
   },
   data() {
     return {
-      swiperList: [
-        {
-          img: require("@/assets/image/CompanyIntroduction/banner.png"),
-        },
-      ],
+      swiperList: [],
+      mobileSwiperList: [],
       mobileIndustryStatusList: [
         {
           titleImg: require("../assets/image/home/num1.png"),
@@ -267,10 +265,30 @@ export default {
     };
   },
   mounted() {
+    this.bannerList();
     var wow = new WOW();
     wow.init();
   },
-  methods: {},
+  methods: {
+    bannerList() {
+      getbannerList({
+        display: 2,
+        adaptation: 1,
+      }).then((res) => {
+        if (res.code == 0) {
+          this.swiperList = res.rows;
+        }
+      });
+      getbannerList({
+        display: 2,
+        adaptation: 2,
+      }).then((res) => {
+        if (res.code == 0) {
+          this.mobileSwiperList = res.rows;
+        }
+      });
+    },
+  },
 };
 </script>
 <style scoped>
@@ -510,7 +528,7 @@ export default {
     width: 25px;
     height: 30px;
   }
-  .cooperate_item .img_weapper img{
+  .cooperate_item .img_weapper img {
     width: 100%;
     height: 100%;
   }

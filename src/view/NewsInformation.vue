@@ -2,7 +2,7 @@
   <!-- 企业案例 -->
   <div id="NewsInformation">
     <!-- 轮播图 -->
-    <Banner :swiperList="swiperList" />
+    <Banner :swiperList="swiperList" :mobileSwiperList="mobileSwiperList" />
 
     <!-- 行业资讯and企业动态  电脑端显示-->
     <div id="news" class="container-fuild hidden-xs">
@@ -11,14 +11,14 @@
           <h2
             class="news_title_H2"
             :class="act == 0 ? 'news_title_H2_active' : ''"
-            @click="act = 0"
+            @click="changeTabs(0)"
           >
             行业资讯
           </h2>
           <h2
             class="news_title_H2"
             :class="act == 1 ? 'news_title_H2_active' : ''"
-            @click="act = 1"
+            @click="changeTabs(1)"
           >
             企业动态
           </h2>
@@ -30,17 +30,17 @@
               class="news_item"
               v-for="(item, index) in newsHyList"
               :key="index"
-              @click="navTo('1')"
+              @click="navTo(item.content)"
             >
               <div class="img_weapper">
-                <img :src="item.img" alt="" />
+                <img :src="item.coverImg" alt="" />
               </div>
               <div class="news_info_weaper">
                 <div class="news_title">{{ item.title }}</div>
-                <div class="news_text line3_ellipsis">{{ item.text }}</div>
+                <div class="news_text line3_ellipsis">{{ item.digest }}</div>
               </div>
 
-              <div class="news_time">{{ item.time }}</div>
+              <div class="news_time">{{ item.createTime | filterTime }}</div>
             </div>
           </div>
 
@@ -48,8 +48,9 @@
             <el-pagination
               background
               layout="total, prev, pager, next"
-              :page-size="4"
-              :total="100"
+              :page-size="pageSize"
+              :total="newsHy.total"
+              @current-change="currentChange"
             >
             </el-pagination>
           </div>
@@ -62,17 +63,17 @@
               class="news_item"
               v-for="(item, index) in newsQyList"
               :key="index"
-              @click="navTo('1')"
+              @click="navTo(item.content)"
             >
               <div class="img_weapper">
-                <img :src="item.img" alt="" />
+                <img :src="item.coverImg" alt="" />
               </div>
               <div class="news_info_weaper">
                 <div class="news_title">{{ item.title }}</div>
-                <div class="news_text line3_ellipsis">{{ item.text }}</div>
+                <div class="news_text line3_ellipsis">{{ item.digest }}</div>
               </div>
 
-              <div class="news_time">{{ item.time }}</div>
+              <div class="news_time">{{ item.createTime | filterTime }}</div>
             </div>
           </div>
 
@@ -80,8 +81,9 @@
             <el-pagination
               background
               layout="total, prev, pager, next"
-              :page-size="6"
-              :total="100"
+              :page-size="pageSize"
+              :total="newsQy.total"
+              @current-change="currentChange"
             >
             </el-pagination>
           </div>
@@ -96,14 +98,14 @@
           <h2
             class="news_title_H2"
             :class="act == 0 ? 'news_title_H2_active' : ''"
-            @click="act = 0"
+            @click="changeTabs(0)"
           >
             行业资讯
           </h2>
           <h2
             class="news_title_H2"
             :class="act == 1 ? 'news_title_H2_active' : ''"
-            @click="act = 1"
+            @click="changeTabs(1)"
           >
             企业动态
           </h2>
@@ -146,16 +148,18 @@
                 class="mobile_news_item"
                 v-for="(item, index) in newsHyList"
                 :key="index"
-                @click="navTo('1')"
+                @click="navTo(item.content)"
               >
                 <div class="mobile_img_weapper">
-                  <img :src="item.img" alt="" />
+                  <img :src="item.coverImg" alt="" />
                 </div>
                 <div class="mobile_news_info_weaper">
                   <div class="mobile_news_title">{{ item.title }}</div>
-                  <div class="mobile_news_time">{{ item.time }}</div>
+                  <div class="mobile_news_time">
+                    {{ item.createTime | filterTime }}
+                  </div>
                   <div class="mobile_news_text line2_ellipsis">
-                    {{ item.text }}
+                    {{ item.digest }}
                   </div>
                   <img
                     class="gojt"
@@ -172,9 +176,10 @@
                   <el-pagination
                     small
                     background
-                    :page-size="6"
                     layout="prev, pager, next"
-                    :total="1000"
+                    :page-size="pageSize"
+                    :total="newsHy.total"
+                    @current-change="currentChange"
                   >
                   </el-pagination>
                 </div>
@@ -188,17 +193,20 @@
                 class="mobile_news_item"
                 v-for="(item, index) in newsQyList"
                 :key="index"
-                @click="navTo('1')"
+                @click="navTo(item.content)"
               >
                 <div class="mobile_img_weapper">
-                  <img :src="item.img" alt="" />
+                  <img :src="item.coverImg" alt="" />
                 </div>
                 <div class="mobile_news_info_weaper">
                   <div class="mobile_news_title">{{ item.title }}</div>
-                  <div class="mobile_news_time">{{ item.time }}</div>
-                  <div class="mobile_news_text line2_ellipsis">
-                    {{ item.text }}
+                  <div class="mobile_news_time">
+                    {{ item.createTime | filterTime }}
                   </div>
+                  <div class="mobile_news_text line2_ellipsis">
+                    {{ item.digest }}
+                  </div>
+
                   <img
                     class="gojt"
                     src="../assets/image/mobileNewInfo/jt1.png"
@@ -214,9 +222,10 @@
                   <el-pagination
                     small
                     background
-                    :page-size="6"
                     layout="prev, pager, next"
-                    :total="1000"
+                    :page-size="pageSize"
+                    :total="newsQy.total"
+                    @current-change="currentChange"
                   >
                   </el-pagination>
                 </div>
@@ -231,84 +240,114 @@
 <script>
 import { WOW } from "wowjs";
 import Banner from "../components/banner"; //轮播图
+import moment from "moment";
+import { getbannerList, getNewsList } from "../api/home";
 
 export default {
-  name: "JobChance",
+  name: "NewsInformation",
   components: {
     Banner,
   },
+  filters: {
+    filterTime(val) {
+      let value = moment(val).format("YYYY-MM-DD");
+      return value;
+    },
+  },
   data() {
     return {
-      swiperList: [
-        {
-          img: require("@/assets/image/newInfo/banner.png"),
-        },
-      ],
-      newsHyList: [
-        {
-          img: require("../assets/image/newInfo/info1.png"),
-          title: "我市召开“AI+5G智慧社区”项目推进会",
-          text: "4月25日，禹州市“AI+5G智慧社区”项目推进会在钧台街道花城社区召开。市新型智慧城市创建指挥部副指挥长、产业集聚区管委会副主任郝长义出席会议并做重要讲话。市民政局，市政务服务和大数据管理局，城区四个街道办事处",
-          time: "2019-04-25",
-        },
-        {
-          img: require("../assets/image/newInfo/info2.png"),
-          title: "“AI+5G智慧社区”助推我市社区建设",
-          text: "4月25日，禹州市“AI+5G智慧社区”项目推进会在钧台街道花城社区召开。市新型智慧城市创建指挥部副指挥长、产业集聚区管委会副主任郝长义出席会议并做重要讲话。市民政局，市政务服务和大数据管理局，城区四个街道办事处",
-          time: "2019-04-25",
-        },
-        {
-          img: require("../assets/image/newInfo/info3.png"),
-          title: "行业微视 | 城市全域智能化推进，AI+安防进入“数据智能”时代",
-          text: "4月25日，禹州市“AI+5G智慧社区”项目推进会在钧台街道花城社区召开。市新型智慧城市创建指挥部副指挥长、产业集聚区管委会副主任郝长义出席会议并做重要讲话。市民政局，市政务服务和大数据管理局，城区四个街道办事处",
-          time: "2019-04-25",
-        },
-        {
-          img: require("../assets/image/newInfo/info4.png"),
-          title: "业界首份！国家信息中心发布《智慧社区运营指南（2021）》",
-          text: "4月25日，禹州市“AI+5G智慧社区”项目推进会在钧台街道花城社区召开。市新型智慧城市创建指挥部副指挥长、产业集聚区管委会副主任郝长义出席会议并做重要讲话。市民政局，市政务服务和大数据管理局，城区四个街道办事处",
-          time: "2019-04-25",
-        },
-      ],
-      newsQyList: [
-        {
-          img: require("../assets/image/newInfo/info5.png"),
-          title: "智慧安防如何改变我们的生活？9张图带你了解真相！",
-          text: "4月25日，禹州市“AI+5G智慧社区”项目推进会在钧台街道花城社区召开。市新型智慧城市创建指挥部副指挥长、产业集聚区管委会副主任郝长义出席会议并做重要讲话。市民政局，市政务服务和大数据管理局，城区四个街道办事处",
-          time: "2019-04-25",
-        },
-        {
-          img: require("../assets/image/newInfo/info6.png"),
-          title:
-            "全国范围内持续深化开展交通秩序专项行动，中南科技“黑科技”共创美好智慧生活",
-          text: "4月25日，禹州市“AI+5G智慧社区”项目推进会在钧台街道花城社区召开。市新型智慧城市创建指挥部副指挥长、产业集聚区管委会副主任郝长义出席会议并做重要讲话。市民政局，市政务服务和大数据管理局，城区四个街道办事处",
-          time: "2019-04-25",
-        },
-        {
-          img: require("../assets/image/newInfo/info7.png"),
-          title:
-            "深度探访：中南科技AIOT智慧安防物联网一体化项目——颖云物联网小镇展厅",
-          text: "4月25日，禹州市“AI+5G智慧社区”项目推进会在钧台街道花城社区召开。市新型智慧城市创建指挥部副指挥长、产业集聚区管委会副主任郝长义出席会议并做重要讲话。市民政局，市政务服务和大数据管理局，城区四个街道办事处",
-          time: "2019-04-25",
-        },
-        {
-          img: require("../assets/image/newInfo/info8.png"),
-          title: "引“智”筑家！中南科技以国标级物联网智慧社区打造未来住宅引领地",
-          text: "4月25日，禹州市“AI+5G智慧社区”项目推进会在钧台街道花城社区召开。市新型智慧城市创建指挥部副指挥长、产业集聚区管委会副主任郝长义出席会议并做重要讲话。市民政局，市政务服务和大数据管理局，城区四个街道办事处",
-          time: "2019-04-25",
-        },
-      ],
+      newsHy: {
+        pageNum: 1,
+        total: 0,
+      },
+      newsQy: {
+        pageNum: 1,
+        total: 0,
+      },
+      pageSize: 4,
+
+      swiperList: [],
+      mobileSwiperList: [],
+      newsHyList: [],
+      newsQyList: [],
       act: 0,
       showNav: false,
     };
   },
   mounted() {
+    this.bannerList();
+    this.getNewsList();
     var wow = new WOW();
     wow.init();
   },
   methods: {
-    navTo(id) {
-      this.$router.push({ path: "/newsHy", query: { id } });
+    navTo(content) {
+      if (this.act == 0) {
+        this.$router.push({
+          path: "/newsHy",
+          query: {
+            content: content,
+            swiperList: this.swiperList,
+            mobileSwiperList: this.mobileSwiperList,
+          },
+        });
+      } else {
+        this.$router.push({
+          path: "/newsQy",
+          query: {
+            content: content,
+            swiperList: this.swiperList,
+            mobileSwiperList: this.mobileSwiperList,
+          },
+        });
+      }
+    },
+    bannerList() {
+      getbannerList({
+        display: 2,
+        adaptation: 1,
+      }).then((res) => {
+        if (res.code == 0) {
+          this.swiperList = res.rows;
+        }
+      });
+      getbannerList({
+        display: 2,
+        adaptation: 2,
+      }).then((res) => {
+        if (res.code == 0) {
+          this.mobileSwiperList = res.rows;
+        }
+      });
+    },
+    getNewsList() {
+      getNewsList({
+        classify: this.act == 0 ? 1 : 2,
+        pageNum: this.act == 0 ? this.newsHy.pageNum : this.newsQy.pageNum,
+        pageSize: this.pageSize,
+      }).then((res) => {
+        if (res.code == 0) {
+          if (this.act == 0) {
+            this.newsHyList = res.rows;
+            this.newsHy.total = res.total;
+          } else {
+            this.newsQyList = res.rows;
+            this.newsQy.total = res.total;
+          }
+        }
+      });
+    },
+    // 页数发生改变时
+    currentChange(value) {
+      this.act == 0
+        ? (this.newsHy.pageNum = value)
+        : (this.newsQy.pageNum = value),
+        this.getNewsList();
+    },
+    // 切换tabs标签
+    changeTabs(index) {
+      this.act = index;
+      this.getNewsList();
     },
   },
 };

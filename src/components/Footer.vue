@@ -32,7 +32,6 @@
           <div class="item">硬件合作 ：<span>18019585305（丁）</span></div>
           <div class="item">设计院合作 ：<span>18538939326（陈）</span></div>
           <div class="item">招商热线 ：<span>16637195486（许）</span></div>
-
         </li>
         <li>
           <div class="name">关注我们</div>
@@ -111,7 +110,9 @@ export default {
   },
   methods: {
     scrollTo(number) {
-      console.log(this.$parent.$refs.header.navIndex = number)
+      this.$parent.$refs.header.navIndex = number;
+      sessionStorage.setItem("navIndex", number);
+
       window.scrollTo(0, 0);
     },
   },
@@ -122,7 +123,7 @@ export default {
   width: 100%;
   height: 350px;
   color: #fff;
-  background: #2b3344;  
+  background: #2b3344;
   padding-top: 60px;
   overflow: hidden;
 }

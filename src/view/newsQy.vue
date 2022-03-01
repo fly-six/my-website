@@ -2,7 +2,7 @@
   <!-- 企业动态 -->
   <div id="JobChance">
     <!-- 轮播图 -->
-    <Banner :swiperList="swiperList" />
+    <Banner :swiperList="swiperList" :mobileSwiperList="mobileSwiperList" />
 
     <!-- 企业动态 -->
     <div id="Case" class="container-fuild">
@@ -11,14 +11,23 @@
           <!-- 面包屑 -->
           <el-breadcrumb separator-class="el-icon-arrow-right">
             <div class="case_breadcrumb">当前位置：</div>
-            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>新闻媒体</el-breadcrumb-item>
+            <el-breadcrumb-item
+              ><a @click="scrollToNav(0, '/home')">首页</a>
+            </el-breadcrumb-item>
+            <el-breadcrumb-item
+              ><a @click="scrollToNav(3, '/newsinformation')"
+                >新闻媒体</a
+              ></el-breadcrumb-item
+            >
             <el-breadcrumb-item>企业动态</el-breadcrumb-item>
           </el-breadcrumb>
 
           <!-- 富文本解析 -->
 
           <div class="Case_content" v-html="navList"></div>
+
+
+          <button @click="scrollToNav">12</button>
         </div>
       </div>
     </div>
@@ -35,18 +44,31 @@ export default {
   },
   data() {
     return {
-      swiperList: [
-        {
-          img: require("@/assets/image/jobChance/banner.png"),
-        },
-      ],
+      swiperList: [],
+      mobileSwiperList: [],
       navList: "",
     };
   },
   mounted() {
+    this.navList = this.$route.query.content;
+    this.swiperList = this.$route.query.swiperList;
+    this.mobileSwiperList = this.$route.query.mobileSwiperList;
     var wow = new WOW();
     wow.init();
   },
+  methods: {
+    scrollToNav(number, path) {
+      this.$parent.$parent.$refs.header.navIndex=number
+
+      sessionStorage.setItem("navIndex", number);
+        
+      window.scrollTo(0, 0);
+      this.$router.push({
+        path,
+      });
+
+    }
+  }
 };
 </script>
 <style scoped>

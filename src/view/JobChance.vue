@@ -2,7 +2,7 @@
   <!-- 企业案例 -->
   <div id="JobChance">
     <!-- 轮播图 -->
-    <Banner :swiperList="swiperList" />
+    <Banner :swiperList="swiperList" :mobileSwiperList="mobileSwiperList" />
 
     <!-- 企业案例 -->
     <div id="Case" class="container-fuild">
@@ -15,12 +15,12 @@
         <div class="Case_content marginTop50">
           <div class="Case_item" v-for="(item, index) in CaseList" :key="index">
             <div class="img_weapper">
-              <img :src="item.img" alt="" />
+              <img :src="item.coverImg" alt="" />
             </div>
             <div class="Case_title">{{ item.title }}</div>
-            <div class="Case_text">{{ item.subtitle }}</div>
+            <div class="Case_text">{{ item.digest }}</div>
             <div class="Case_btn_weapper">
-              <div class="Case_btn" @click="navTo('1')">了解详情</div>
+              <div class="Case_btn" @click="navTo(item.content)">了解详情</div>
             </div>
           </div>
         </div>
@@ -30,26 +30,29 @@
           <el-pagination
             background
             layout="total, prev, pager, next"
-            :page-size="6"
-            :total="100"
+            @current-change="currentChange"
+            :page-size="pageSize"
+            :total="total"
           >
           </el-pagination>
         </div>
 
-          <el-row class="visible-xs">
-            <el-col :span="24">
-              <div class="pagination_weapper">
-                <el-pagination
-                  small
-                  background
-                  :page-size="6"
-                  layout="prev, pager, next"
-                  :total="1000"
-                >
-                </el-pagination>
-              </div>
-            </el-col>
-          </el-row>
+        <!-- 手机端显示的分页 -->
+        <el-row class="visible-xs">
+          <el-col :span="24">
+            <div class="pagination_weapper">
+              <el-pagination
+                small
+                background
+                layout="prev, pager, next"
+                :page-size="pageSize"
+                @current-change="currentChange"
+                :total="total"
+              >
+              </el-pagination>
+            </div>
+          </el-col>
+        </el-row>
 
         <!-- <el-row>
           <el-col :span="24">
@@ -66,16 +69,12 @@
         </el-row> -->
       </div>
     </div>
-
-    <!-- <div id="dome" class="container" v-big="n"></div>
-    <div id="dome" class="container" v-big="n"></div>
-    <div id="dome" class="container" v-text="n"></div>
-    <button @click="n++">点击+1</button> -->
   </div>
 </template>
 <script>
 import { WOW } from "wowjs";
 import Banner from "../components/banner"; //轮播图
+import { getEnterpriseList, getbannerList } from "../api/home";
 
 export default {
   name: "JobChance",
@@ -84,66 +83,74 @@ export default {
   },
   data() {
     return {
-      n: 1,
-      swiperList: [
-        {
-          img: require("@/assets/image/jobChance/banner.png"),
-        },
-      ],
-      CaseList: [
-        {
-          img: require("@/assets/image/jobChance/t1.png"),
-          title: "颖云物联网小镇",
-          subtitle:
-            "颍云物联网科技创新园位于河南省禹州市，区域规划总用地面积约3176亩。是中国电科将禹州作为“国家新型智慧城市物联网基础设施平台”试点",
-        },
-        {
-          img: require("@/assets/image/jobChance/t2.png"),
-          title: "名门世家",
-          subtitle:
-            "颍云物联网科技创新园位于河南省禹州市，区域规划总用地面积约3176亩。是中国电科将禹州作为“国家新型智慧城市物联网基础设施平台”试点",
-        },
-        {
-          img: require("@/assets/image/jobChance/t3.png"),
-          title: "御湖湾社区",
-          subtitle:
-            "颍云物联网科技创新园位于河南省禹州市，区域规划总用地面积约3176亩。是中国电科将禹州作为“国家新型智慧城市物联网基础设施平台”试点",
-        },
-        {
-          img: require("@/assets/image/jobChance/t4.png"),
-          title: " 森源·壹号公馆",
-          subtitle:
-            "颍云物联网科技创新园位于河南省禹州市，区域规划总用地面积约3176亩。是中国电科将禹州作为“国家新型智慧城市物联网基础设施平台”试点",
-        },
-        {
-          img: require("@/assets/image/jobChance/t5.png"),
-          title: "颍河湾",
-          subtitle:
-            "颍云物联网科技创新园位于河南省禹州市，区域规划总用地面积约3176亩。是中国电科将禹州作为“国家新型智慧城市物联网基础设施平台”试点",
-        },
-        {
-          img: require("@/assets/image/jobChance/t6.png"),
-          title: "悦蓝山",
-          subtitle:
-            "颍云物联网科技创新园位于河南省禹州市，区域规划总用地面积约3176亩。是中国电科将禹州作为“国家新型智慧城市物联网基础设施平台”试点",
-        },
-      ],
+      pageNum: 1,
+      pageSize: 6,
+      total: 0,
+      swiperList: [],
+      mobileSwiperList: [],
+      CaseList: []
     };
   },
   mounted() {
+    this.bannerList();
+    this.getEnterpriseList();
     var wow = new WOW();
     wow.init();
   },
   // 自定义vue指令
-  // directives: {
-  //   big(el, binding, vnode) {
-  //     console.log(el, binding, vnode);
-  //     el.innerText = binding.value * 10;
-  //   },
-  // },
+  directives: {
+    big(el, binding, vnode) {
+      console.log(el, binding, vnode);
+      el.innerText = binding.value * 10;
+    },
+  },
   methods: {
-    navTo(id) {
-      this.$router.push({ path: "/projectCases", query: { id } });
+    navTo(content) {
+      this.$router.push({
+        path: "/projectCases",
+        query: {
+          content: content,
+          swiperList: this.swiperList,
+          mobileSwiperList: this.mobileSwiperList,
+        },
+      });
+    },
+    // 请求banner
+    bannerList() {
+      getbannerList({
+        display: 3,
+        adaptation: 1,
+      }).then((res) => {
+        if (res.code == 0) {
+          this.swiperList = res.rows;
+        }
+      });
+      getbannerList({
+        display: 3,
+        adaptation: 2,
+      }).then((res) => {
+        if (res.code == 0) {
+          this.mobileSwiperList = res.rows;
+        }
+      });
+    },
+    // 数据列表
+    getEnterpriseList() {
+      let { pageNum, pageSize } = this;
+      getEnterpriseList({
+        pageNum,
+        pageSize,
+      }).then((res) => {
+        if (res.code == 0) {
+          this.CaseList = res.rows;
+          this.total = res.total;
+        }
+      });
+    },
+    // 页数发生改变时
+    currentChange(value) {
+      this.pageNum = value;
+      this.getEnterpriseList();
     },
   },
 };
