@@ -23,5 +23,10 @@ module.exports = {
                 }
             }
         }
-    }
+    },
+    publicPath: process.env.NODE_ENV === 'production'
+        ? '/XXguanwang/'  // 这里填写您的GitHub仓库名称
+        : '/',
+    outputDir: 'dist',
+    assetsDir: 'static'
 }

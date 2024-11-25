@@ -2,10 +2,15 @@
   <!-- 头部整体盒子 -->
   <div id="header" class="container-fuild">
     <!-- 电脑导航 -->
-    <div class="header-nav container hidden-xs">
+    <!-- hidden-xs -->
+    <div class="header-nav container ">
       <!-- 导航logo -->
-      <div class="header-nav-logo">
-        <img src="@/assets/image/logo_black.png" />
+      <div class="header-nav-logo" @mouseover="showDownload = true" @mouseleave="showDownload = false">
+        <img class="img" src="@/assets/image/images/logo1.png" />
+        <div class="download-wrap" v-show="showDownload" @click="$router.push('/DownloadCatalog')">
+          <img class="icon" src="@/assets/image/images/download1.png" />
+          <div class="download-text">Download Catalog</div>
+        </div>  
       </div>
       <!-- 导航内容 -->
       <ul class="header-nav-wrapper">
@@ -13,7 +18,7 @@
           v-for="(item, index) in navList"
           :key="index"
           :class="index == navIndex ? 'active' : ''"
-          @click="navClick(index, item.name)"
+          @click="navClick(index, item.name, item.path)"
         >
           <router-link :to="item.path">
             {{ item.name }}
@@ -32,9 +37,9 @@
       </ul>
     </div>
     <!-- 手机导航 -->
-    <div class="nav_top_weapper visible-xs"></div>
+    <div class="nav_top_weapper visible-xs" v-if="false"></div>
 
-    <div class="header-nav-m container-fuild visible-xs">
+    <div class="header-nav-m container-fuild visible-xs" v-if="false">
       <!-- 导航栏 -->
       <div class="header-nav-m-menu text-center">
         <div class="menuName_weapper logo_black_weapper">
@@ -82,51 +87,89 @@ export default {
       navIndex: sessionStorage.getItem("navIndex")
         ? sessionStorage.getItem("navIndex")
         : 0,
-      menuName: "首页",
+      menuName: "Home",
+      showDownload: false,
       menuClass: "glyphicon glyphicon-menu-down",
       navList: [
         {
-          name: "首页",
+          name: "Home",
           path: "/",
           children: [],
         },
         {
-          name: "AloT管理平台",
-          path: "/service",
-          children: [],
+          name: "Colorant",
+          path: "/Colorant/Pigments",
+          children: [
+            {
+              name: "Pigments",
+              path: "/Colorant/Pigments",
+            },
+            {
+              name: "Special Pigments",
+              path: "/Colorant/Pigments",
+            },
+            {
+              name: "Raw Materials",
+              path: "/Colorant/Pigments",
+            },
+          ],
         },
         {
-          name: "企业案例",
-          path: "/jobchance",
-          children: [],
+          name: "Cosmetic",
+          path: "/Cosmetic/FinalProduct",
+          children: [
+            {
+              name: "Final Product",
+              path: "/Cosmetic/FinalProduct",
+            },
+            {
+              name: "Raw Materials",
+              path: "/Cosmetic/FinalProduct",
+            },
+          ],
         },
         {
-          name: "新闻媒体",
-          path: "/newsinformation",
+          name: "Device",
+          path: "/Device",
+          children: [
+            {
+              name: "NaA SeolMembane",
+              path: "/NaASeolMembane",
+            },
+            {
+              name: "Nanobubble Generator",
+              path: "/NanobubbleGenerator",
+            },
+          ],
+        },
+
+        {
+          name: "Other",
+          path: "/DownloadCatalog",
           children: [],
         },
 
         {
-          name: "招商代理",
-          path: "/companyintroduction",
-          children: [],
-        },
-
-        {
-          name: "关于中南",
-          path: "/contactus",
+          name: "About Us",
+          path: "/AboutUs",
           children: [],
         },
       ],
+    
     };
+  },
+  mounted() {
+    // console.log(this.$router.options.routes[0].children.filter(item => item.name), 'this.navList');
   },
   methods: {
     navClick(index, name, path) {
       this.navIndex = index;
       sessionStorage.setItem("navIndex", index);
       this.menuName = name;
+      console.log(path, 'path');
+      
       if (path) {
-        this.$router.push({ path });
+        this.$router.push(path);
       }
     },
     menuClick() {
@@ -158,17 +201,18 @@ export default {
 }
 /* 导航栏 */
 #header .header-nav {
-  height: 110px;
+  height: 90px;
 }
 /* 导航栏logo */
 #header .header-nav .header-nav-logo {
-  width: 108px;
+  width: 195px;
   height: 100%;
   float: left;
   position: relative;
+  background-color: #3f8dbd;
 }
 /* 导航栏logo图片 */
-#header .header-nav .header-nav-logo img {
+#header .header-nav .header-nav-logo .img {
   width: auto;
   height: 80px;
   position: absolute;
@@ -178,12 +222,36 @@ export default {
   bottom: 0;
   margin: auto;
 }
+#header .header-nav .download-wrap {
+  position: absolute;
+  bottom: -46px;
+  right: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 195px;
+  height: 46px;
+  color: #308FBE;
+  font-size: 17px;
+  background-color: #fff;
+  cursor: pointer;
+
+}
+#header .header-nav .download-wrap:hover {
+  text-decoration: underline;
+}
+#header .header-nav .download-wrap .icon {
+  width: 17px;
+  height: 19px;
+  margin-right: 4px;
+}
 /* 导航栏 导航容器 */
 #header .header-nav-fixed .header-nav-wrapper {
   line-height: 50px;
 }
 #header .header-nav .header-nav-wrapper {
-  line-height: 110px;
+  line-height: 90px;
   float: right;
   margin: 0;
   max-width: 800px;
@@ -196,7 +264,9 @@ export default {
 }
 /* 导航栏 每个导航下面的 a 链接 */
 #header .header-nav .header-nav-wrapper > li > a {
-  color: #000;
+  /* color: #000; */
+  font-family: '12671.ttf';
+  color: #8b8b8b;
   font-size: 15px;
   padding: 15px 0;
   position: relative;
@@ -211,7 +281,7 @@ export default {
   height: 2px;
   opacity: 0;
   transition: all 0.6s ease;
-  background-color: #1e73be;
+  background-color: #308FBE;
 }
 /* 导航栏 每个导航下面的 a 链接的右侧小三角 */
 #header .header-nav .header-nav-wrapper > li > a > span {
@@ -220,7 +290,7 @@ export default {
 }
 /* 导航栏 每个导航下面的 a 链接 鼠标滑上去的样式 */
 #header .header-nav .header-nav-wrapper > li > a:hover {
-  color: #1e73be;
+  color: #308FBE;
   text-decoration: none;
 }
 /* 导航栏 每个导航下面的 a 链接 鼠标滑上去下划线的样式 */
@@ -235,9 +305,9 @@ export default {
 }
 /* 导航栏 每个导航下面的 a 链接 鼠标点击后的样式 */
 #header .header-nav .header-nav-wrapper > li.active > a {
-  color: #1e73be;
+  color: #308FBE;
   text-decoration: none;
-  border-bottom: 2px solid #1e73be;
+  border-bottom: 2px solid #308FBE;
 }
 /* 导航栏 每个导航下面的二级导航容器 */
 #header .header-nav .header-nav-wrapper > li > dl {
@@ -268,7 +338,9 @@ export default {
   cursor: pointer;
   background: #ccc;
 }
-@media screen and (max-width: 997px) {
+/* 让下面这个媒体查询始终不起作用 */
+/* @media screen and (max-width: 997px) { */
+@media screen and (max-width: 0px) {
   .nav_top_weapper {
     width: 100%;
     height: 50px;

@@ -1,71 +1,51 @@
 <template>
-  <div id="footer" class="container-fluid">
-    <div class="container">
-      <!-- 电脑显示 -->
-      <ul class="list clearfix hidden-xs">
-        <li @click="scrollTo(5)">
-          <div class="name">关于中南</div>
-          <router-link :to="navList[5].path" class="item">关于我们</router-link>
-          <router-link :to="navList[5].path" class="item">荣誉资质</router-link>
-          <router-link :to="navList[5].path" class="item">合作企业</router-link>
-        </li>
-        <li @click="scrollTo(3)">
-          <div class="name">新闻媒体</div>
-          <router-link :to="navList[3].path" class="item">行业资讯</router-link>
-          <router-link :to="navList[3].path" class="item">企业动态</router-link>
-        </li>
-        <li @click="scrollTo(1)">
-          <div class="name">产品介绍</div>
-          <router-link :to="navList[1].path" class="item"
-            >AIoT管理平台</router-link
+<div>
+  <footer id="footer" class="container-fuild" >
+    <!-- <img class="footer-top-img" src="@/assets/image/images/footer.png" alt=""/> -->
+    <div class="footer-content container">
+      <div class="left">
+        <div class="left-content">
+          <div 
+            class="left-content-item" 
+            v-for="(item, index) in navList" 
+            :key="item.name"
+            @click="navClick(index, item.name, item.path)"
           >
-          <router-link :to="navList[1].path" class="item">企业案例</router-link>
-        </li>
-        <li @click="scrollTo(4)">
-          <div class="name">招商代理</div>
-          <router-link :to="navList[4].path" class="item">招商代理</router-link>
-          <router-link :to="navList[4].path" class="item">联系我们</router-link>
-        </li>
-        <li>
-          <div class="name">联系方式</div>
-          <div class="item">全国热线 ：<span>400-7636668</span></div>
-          <div class="item">硬件合作 ：<span>18019585305（丁）</span></div>
-          <div class="item">设计院合作 ：<span>18538939326（陈）</span></div>
-          <div class="item">招商热线 ：<span>16637195486（许）</span></div>
-        </li>
-        <li>
-          <div class="name">关注我们</div>
-          <div class="official">
-            <img
-              src="../../src/assets/image/gongzhouhao.png"
-              style="width: 102px"
-            />
-            <div class="flex flexCenter marginTop10">官方公众号</div>
+            <div class="left-content-item-title">
+              {{item.name}}
+            </div>
           </div>
-        </li>
-      </ul>
+        </div>
 
-      <!-- 手机显示 -->
-      <div class="conter visible-xs">
-        <div>全国热线：400-7636668</div>
-        <div>硬件合作：18019585305（丁）</div>
-        <div>设计院合作 :18538939326（陈）</div>
-        <div>招商热线 ：16637195486（许）</div>
-
-        <img
-          src="../../src/assets/image/gongzhouhao.png"
-          style="width: 102px"
-        />
       </div>
-
-      <div class="copy">
-        <div class="pull-left">
-          Copyright©中南信息科技（深圳）有限公司 All Rights Reserved
-          粤ICP备18035285号
+      <div class="content">
+        <div class="content-item">
+          Please Contact Us 
+          <br>
+          Get Detailed Brochures And 
+          <br>
+          Quotes For Each Product.
+        </div>
+      </div>
+      <div class="right">
+        <div class="top-logo">
+          <img class="top-logo-img" src="@/assets/image/images/logo2.png" alt="">
+        </div>
+        <div class="text">
+          Hangzhou Matching lmp & Exp Co., Ltd.
+        </div>
+        <div class="info">
+          info@Mecyi.com
         </div>
       </div>
     </div>
+  </footer>
+  <div class="copyright container-fuild">
+    <div class="copyright-content">版权所有 ©2024 MatchingChemical.com</div>
+    <div class="copyright-right">浙ICP备2024095824号</div>
   </div>
+</div>
+
 </template>
 <script>
 export default {
@@ -74,46 +54,78 @@ export default {
     return {
       navList: [
         {
-          name: "首页",
+          name: "Home",
           path: "/",
           children: [],
         },
         {
-          name: "AloT管理平台",
-          path: "/service",
-          children: [],
+          name: "Colorant",
+          path: "/Pigments",
+          children: [
+            {
+              name: "Special",
+              path: "/Pigments",
+            },
+            {
+              name: "Special Pigments",
+              path: "/Pigments",
+            },
+            {
+              name: "Raw Materials",
+              path: "/Pigments",
+            },
+          ],
         },
         {
-          name: "企业案例",
-          path: "/jobchance",
-          children: [],
+          name: "Cosmetic",
+          path: "/Cosmetic",
+          children: [
+            {
+              name: "Final Product",
+              path: "/FinalProduct",
+            },
+            {
+              name: "Raw Materials",
+              path: "/RawMaterials",
+            },
+          ],
         },
         {
-          name: "新闻媒体",
-          path: "/newsinformation",
+          name: "Device",
+          path: "/Device",
+          children: [
+            {
+              name: "NaA SeolMembane",
+              path: "/NaASeolMembane",
+            },
+            {
+              name: "Nanobubble Generator",
+              path: "/NanobubbleGenerator",
+            },
+          ],
+        },
+
+        {
+          name: "Other",
+          path: "/DownloadCatalog",
           children: [],
         },
 
         {
-          name: "招商代理",
-          path: "/companyintroduction",
-          children: [],
-        },
-
-        {
-          name: "关于中南",
-          path: "/contactus",
+          name: "About Us",
+          path: "/AboutUs",
           children: [],
         },
       ],
     };
   },
   methods: {
-    scrollTo(number) {
-      this.$parent.$refs.header.navIndex = number;
-      sessionStorage.setItem("navIndex", number);
-
+    navClick(index, name, path) {
+      this.$router.push(path);
+      this.$parent.$refs.header.navIndex = index;
+      sessionStorage.setItem("navIndex", index);
       window.scrollTo(0, 0);
+      
     },
   },
 };
@@ -121,73 +133,131 @@ export default {
 <style scoped>
 #footer {
   width: 100%;
-  height: 350px;
-  color: #fff;
-  background: #2b3344;
-  padding-top: 60px;
-  overflow: hidden;
+  background-color: rgb(245, 244, 249);
+  font-family: '12665.ttf';
+  position: relative;
+  background-image: url("../assets/image/images/footer.png");
+  background-size: 100% 100%;
 }
-#footer .list li {
-  float: left;
-  margin-right: 90px;
-}
-#footer .list li:nth-last-child(1) {
-  float: right;
-  margin-right: 0px;
-}
-#footer .list li .name {
-  color: #fff;
-  font-weight: bold;
-  font-size: 18px;
-  margin-bottom: 32px;
-}
-#footer .list li .item {
-  font-size: 16px;
-  color: #d8d8d8;
-  margin-bottom: 26px;
+#footer .footer-top-img {
+  width: 100%;
   display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+#footer .footer-content {
+  /* position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%); */
+  display: flex;
+  justify-content: space-between;
+  height: 220px;
+  padding: 0px 0 0 40px;
+}
+#footer .footer-content .left {
+  /* flex: 1; */
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin: auto 0;
+}
+#footer .footer-content .left .left-content {
+  display: flex;
+  flex-wrap: wrap;
+}
+#footer .footer-content .left .left-content .left-content-item {
+  width: 50%;
+  margin: 10px 0;
+  color: #fff;
+}
+#footer .footer-content .left .left-content .left-content-item .left-content-item-title {
+  position: relative;
+  padding-left: 10px;
+  /* 手指形状 */
   cursor: pointer;
 }
-#footer .list li .item:hover {
-  color: #fff;
-  text-decoration: none;
-}
-#footer .official {
-  width: 102px;
+#footer .footer-content .left .left-content .left-content-item .left-content-item-title:hover {
+  text-decoration: underline;
 }
 
-#footer .copy {
-  /* height: 50px; */
-  margin-top: 20px;
-  padding-top: 20px;
-  /* line-height: 50px; */
-  font-size: 16px;
-  color: #d8d8d8;
-  border-top: 2px solid #4a556a;
+#footer .footer-content .left .left-content .left-content-item .left-content-item-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-right: 5px solid transparent;
+  border-left: 5px solid #fff;
+  border-bottom: 5px solid transparent;
+  border-top: 5px solid transparent;
 }
-/* 媒体查询（手机） */
-@media screen and (max-width: 768px) {
-  #footer {
-    width: 100%;
-    height: 350px;
-    color: #fff;
-    background: #2b3344;
-    padding-top: 20px;
-    overflow: hidden;
-  }
-  #footer .copy {
-    font-size: 14px;
-    /* margin: 30px 0 10px; */
-  }
-  .conter {
-    text-align: center;
-  }
-  .conter div {
-    padding: 4px;
-  }
-  .conter img {
-    display: inline-block;
-  }
+#footer .footer-content .content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+#footer .footer-content .content .content-item {
+  color: #fff;
+  font-size: 23px;
+  white-space: pre-line;
+  margin: 30px 0;
+}
+#footer .footer-content .right {
+  flex: 1;
+}
+#footer .footer-content .right .top-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 192px;
+  height: 80px;
+  background: #fff;
+}
+#footer .footer-content .right .top-logo .top-logo-img {
+  width: 143px;
+  height: 65px;
+}
+#footer .footer-content .right .text {
+  color: #fff;
+  font-size: 22px;
+  font-weight: 600;
+  margin: 10px 0;
+}
+#footer .footer-content .right .info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 192px;
+  height: 37px;
+  padding: 10px;
+  color: #5A9EC4;
+  font-size: 19px;
+  background: #fff;
+}
+
+.copyright {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 30px;
+  background-color: #102943;
+  padding: 10px 20px;
+  color: #397893;
+}
+.copyright .copyright-content {
+  flex: 1;
+  text-align: center;
+  font-size: 14px;
+}
+.copyright .copyright-right {
+  justify-self: flex-end;
+  font-size: 14px;
 }
 </style>
 

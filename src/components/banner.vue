@@ -2,7 +2,7 @@
   <div>
     <!-- 轮播图 -->
       <!-- 电脑端显示 -->
-    <div id="swiper" class="container-fuild hidden-xs" v-if="swiperList.length > 0">
+    <div id="swiper" class="container-fuild hidden-xs" v-if="swiperList.length > 0" :style="{height: height + 'px'}">
       <div
         class="swiper-container banner-swiper"
       >
@@ -46,11 +46,15 @@ export default {
   props: {
     swiperList: {
       type: Array,
-      default: [],
+      default: () => [],
     },
     mobileSwiperList: {
       type: Array,
-      default: [],
+      default: () => [],
+    },
+    height: {
+      type: String,
+      default: "567",
     },
   },
   data() {
@@ -92,7 +96,8 @@ export default {
 <style scoped>
 /* 轮播图 */
 #swiper {
-  height: 510px;
+  height: 567px;
+  /* height: auto; */
 }
 #swiper .banner-swiper {
   width: 100%;
@@ -101,6 +106,7 @@ export default {
 #swiper .banner-swiper .swiper-slide img {
   width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 #swiper .banner-swiper .swiper-slide {
   position: relative;

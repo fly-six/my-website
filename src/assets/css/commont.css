@@ -1,3 +1,32 @@
+@font-face {
+    font-family: "12665.ttf";
+    src: url(../fonts/12665.ttf);
+}
+@font-face {
+    font-family: "12669.ttf";
+    src: url(../fonts/12669.ttf);
+}
+
+@font-face {
+    font-family: "12671.ttf";
+    src: url(../fonts/12671.ttf);
+}
+@font-face {
+    font-family: "FuturaBT-MediumItalic.ttf";
+    src: url(../fonts/Futura\ Md\ BT\ Medium\ Italic.ttf);
+}
+@font-face {
+    font-family: "FuturaBT-BoldItalic.ttf";
+    src: url(../fonts/Futura\ Md\ BT\ Bold\ Italic.ttf);
+}
+@font-face {
+    font-family: "tt0142m.ttf";
+    src: url(../fonts/tt0142m.ttf);
+}
+.container-fuild {
+    max-width: 1920px;
+    margin: 0 auto;
+}
 .flex {
     display: flex;
     justify-content: flex-start;
